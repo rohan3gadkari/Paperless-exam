@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Exam Portal - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white font-sans min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-md border border-slate-700 relative">
+        
+        <div class="absolute top-4 right-4">
+            <a href="teacher.html" class="text-xs bg-slate-700 hover:bg-slate-600 text-yellow-400 px-3 py-1.5 rounded-md font-medium transition border border-slate-600">
+                ⚙️ शिक्षक पॅनेल
+            </a>
+        </div>
+
+        <div class="text-center mb-8 mt-4">
+            <div class="inline-block bg-blue-600 p-3 rounded-full mb-3 shadow-lg shadow-blue-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold tracking-wide">कागदमुक्त परीक्षा पोर्टल</h1>
+            <p class="text-sm text-slate-400 mt-1">Paperless Examination System</p>
+        </div>
+
+        <form action="portal.html" method="GET" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">विद्यार्थ्याचे पूर्ण नाव</label>
+                <input type="text" name="student_name" required placeholder="उदा. रोहन गाढवे" 
+                    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">हॉल तिकीट / सीट नंबर</label>
+                <input type="text" name="roll_no" required placeholder="उदा. ME202605" 
+                    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">परीक्षा विषय</label>
+                <select name="subject" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition">
+                    <option value="Fluid Mechanics">फ्लूइड मेकॅनिक्स (Fluid Mechanics)</option>
+                    <option value="Strength of Materials">स्ट्रेंथ ऑफ मटेरियल्स (SOM)</option>
+                    <option value="EV Technology">इलेक्ट्रिक व्हेईकल टेक्नॉलॉजी</option>
+                </select>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition">
+                    परीक्षा सुरू करा (Start Exam)
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

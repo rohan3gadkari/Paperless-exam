@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Panel - Set Question Paper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white font-sans min-h-screen p-4 md:p-8">
+
+    <div class="max-w-2xl mx-auto bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-2xl">
+        <div class="border-b border-slate-700 pb-4 mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-yellow-400">📝 शिक्षक पॅनेल (Teacher Dashboard)</h1>
+                <p class="text-sm text-slate-400 mt-1">नवीन प्रश्नपत्रिका सेट करा</p>
+            </div>
+            <a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-2 rounded-md transition">
+                🏠 होम स्क्रीन
+            </a>
+        </div>
+
+        <form id="question-setter-form" onsubmit="addQuestionToPaper(event)" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">प्रश्न (Question Text)</label>
+                <textarea id="input-q" required placeholder="इथे तुमचा प्रश्न टाईप करा..." rows="3"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">पर्याय A</label>
+                    <input type="text" id="input-o0" required placeholder="पहिला पर्याय" 
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">पर्याय B</label>
+                    <input type="text" id="input-o1" required placeholder="दुसरा पर्याय" 
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">पर्याय C</label>
+                    <input type="text" id="input-o2" required placeholder="तिसरा पर्याय" 
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">पर्याय D</label>
+                    <input type="text" id="input-o3" required placeholder="चौथा पर्याय" 
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">अचूक उत्तर (Correct Answer)</label>
+                <select id="input-correct" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition">
+                    <option value="0">पर्याय A</option>
+                    <option value="1">पर्याय B</option>
+                    <option value="2">पर्याय C</option>
+                    <option value="3">पर्याय D</option>
+                </select>
+            </div>
+
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-lg transition">
+                ➕ प्रश्न पेपरमध्ये जोडा
+            </button>
+        </form>
+
+        <div class="mt-8 border-t border-slate-700 pt-6">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-bold text-slate-300">पेपरमधील एकूण प्रश्न (<span id="q-count" class="text-yellow-400">0</span>)</h3>
+                <button onclick="clearAllQuestions()" class="text-xs text-rose-400 hover:underline">सर्व प्रश्न हटवा</button>
+            </div>
+            <div id="questions-preview-list" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                <p class="text-sm text-slate-500 italic">अजून एकही प्रश्न जोडलेला नाही...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let customQuestions = JSON.parse(localStorage.getItem('custom_exam_questions')) || [];
+
+        function updatePreview() {
+            const list = document.getElementById("questions-preview-list");
+            document.getElementById("q-count").innerText = customQuestions.length;
+            
+            if (customQuestions.length === 0) {
+                list.innerHTML = `<p class="text-sm text-slate-500 italic">अजून एकही प्रश्न जोडलेला नाही. डीफॉल्ट प्रश्न वापरले जातील.</p>`;
+                return;
+            }
+
+            list.innerHTML = "";
+            customQuestions.forEach((item, idx) => {
+                const div = document.createElement("div");
+                div.className = "bg-slate-900 p-3 rounded-lg border border-slate-700 text-sm flex justify-between items-start";
+                div.innerHTML = `
+                    <div>
+                        <span class="text-blue-400 font-bold">प्रश्न ${idx+1}:</span> ${item.q}
+                        <div class="text-xs text-emerald-400 mt-1">बरोबर पर्याय: ${String.fromCharCode(65 + item.a)}</div>
+                    </div>
+                    <button onclick="deleteQuestion(${idx})" class="text-rose-500 hover:text-rose-400 text-xs font-medium ml-4 mt-0.5">हटवा</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function addQuestionToPaper(event) {
+            event.preventDefault();
+            const newQ = {
+                q: document.getElementById("input-q").value,
+                o: [
+                    document.getElementById("input-o0").value,
+                    document.getElementById("input-o1").value,
+                    document.getElementById("input-o2").value,
+                    document.getElementById("input-o3").value
+                ],
+                a: parseInt(document.getElementById("input-correct").value)
+            };
+            customQuestions.push(newQ);
+            localStorage.setItem('custom_exam_questions', JSON.stringify(customQuestions));
+            document.getElementById("question-setter-form").reset();
+            updatePreview();
+        }
+
+        function deleteQuestion(idx) {
+            customQuestions.splice(idx, 1);
+            localStorage.setItem('custom_exam_questions', JSON.stringify(customQuestions));
+            updatePreview();
+        }
+
+        function clearAllQuestions() {
+            if(confirm("सर्व प्रश्न हटवायचे आहेत का?")) {
+                customQuestions = [];
+                localStorage.removeItem('custom_exam_questions');
+                updatePreview();
+            }
+        }
+
+        window.onload = updatePreview;
+    </script>
+</body>
+</html>
